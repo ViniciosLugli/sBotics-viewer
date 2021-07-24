@@ -14,8 +14,6 @@ from src.instances.rescueInfos import RescueInfo
 from src.pipeline import Pipeline, Parser
 #
 
-
-
 class App(tk.Frame):
 	def __init__(self, root = None):
 		super().__init__(root)
@@ -24,13 +22,11 @@ class App(tk.Frame):
 		self.drawIdentifiedList = [None] * 255
 		self.drawFreeList = []
 
-		self.root.geometry("600x622")
-		self.pack()
-
 		self.canvas = Canvas(root, width = 600, height = 622)
 		self.canvas.pack()
 
 		self.rescue_img = ImageTk.PhotoImage(Image.open("./res/rescue.png"))
+		self.rescue = RescueInfo()
 		self.pipeline = Pipeline("./res/out.txt")
 
 		menubar = Menu(self.master)
@@ -56,17 +52,14 @@ class App(tk.Frame):
 		elif res[0] == "POINT" or res[0] == "LINE":
 			self.drawFreeList.append(res[1])
 		elif res[0] == "RESCUE":
-			pass
+			self.rescue.triangle = res[1]["triangle"]
+			self.rescue.exit = res[1]["exit"]
 		elif res[0] == "CLEARLINES":
 			self.drawFreeList = []
 
 
 	def mainloop(self):
 		self.root.protocol("WM_DELETE_WINDOW", self.quit)
-		#self.drawFreeList.append(AliveVictim((100, 150)))
-		#self.drawFreeList.append(DeadVictim((150, 100)))
-		#self.drawFreeList.append(Point((150, 150), monokai["red"]))
-		#self.drawFreeList.append(Line((10, 10), (50, 50), monokai["blue"]))
 
 		while self.process:
 			#Read infos process
@@ -101,9 +94,10 @@ class App(tk.Frame):
 			self.root.update()
 
 root = tk.Tk()
-root.iconphoto(False, PhotoImage(file = './res/logo.png'))
+root.title("sBotics viewer")
+root.geometry("600x622")
 root.resizable(False, False)
-
+root.iconphoto(False, PhotoImage(file = './res/logo.png'))
 ttkthemes.themed_style.ThemedStyle(theme="breeze")
 
 app = App(root)
