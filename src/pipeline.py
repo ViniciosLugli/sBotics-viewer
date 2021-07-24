@@ -9,14 +9,23 @@ class Pipeline:
 
 	def reset(self):
 		self.last_line_limit = 0
+		self.close()
 		self.file = open(self.path, "r")
 
+	def open(self):
+		self.file = open(self.path, "r")
+
+	def close(self):
+		self.file.close()
+
 	def update(self, callback):
+		self.open()
 		for position, line in enumerate(self.file):
-			if position >= self.last_line_limit:
+			if(position > self.last_line_limit and len(line) > 7):
 				self.last_line_limit = position
 				print("New line: ", line)
-				callback(line)
+				callback(line, position)
+		self.close()
 
 class Parser:
 	def getClass(line):

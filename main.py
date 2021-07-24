@@ -37,14 +37,17 @@ class App(tk.Frame):
 
 	def debug(self):
 		print("fuk edu")
+		self.pipeline.reset()
 
 	def quit(self):
+		self.pipeline.close()
 		self.process = False
 
 	def create_rescue(self):
 		self.canvas.create_image(0, 0, anchor=NW, image=self.rescue_img)
 
-	def update(self, line):
+	def update(self, line, position):
+		self.root.title(f'sBotics viewer line:{position}')
 		res = Parser.check(line)
 
 		if res[0] == "ALIVEVICTIM" or res[0] == "DEADVICTIM":
@@ -54,9 +57,9 @@ class App(tk.Frame):
 		elif res[0] == "RESCUE":
 			self.rescue.triangle = res[1]["triangle"]
 			self.rescue.exit = res[1]["exit"]
+			self.drawIdentifiedList[254] = self.rescue.update()
 		elif res[0] == "CLEARLINES":
 			self.drawFreeList = []
-
 
 	def mainloop(self):
 		self.root.protocol("WM_DELETE_WINDOW", self.quit)
@@ -90,11 +93,12 @@ class App(tk.Frame):
 						except Exception as e:
 							print("Error on draw free entity, e:", e)
 
-			time.sleep(0.32)
+			time.sleep(0.22)
 			self.root.update()
 
 root = tk.Tk()
 root.title("sBotics viewer")
+root.attributes('-topmost', True)
 root.geometry("600x622")
 root.resizable(False, False)
 root.iconphoto(False, PhotoImage(file = './res/logo.png'))
