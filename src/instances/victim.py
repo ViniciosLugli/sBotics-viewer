@@ -14,9 +14,6 @@ class Victim(Entity):
 		self.attempt = 0
 		self.canvas = None
 
-	def draw(self, canvas):
-		pass
-
 	def rescue(self, value = True):
 		isRescued = value
 

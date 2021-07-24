@@ -8,6 +8,9 @@ class Point(Entity):
 		self.info = _info
 		self.deleteQuery = False
 
+	def draw(self, canvas):
+		_create_circle(canvas, self.position[0] * 2, self.position[1] * 2, 3, fill = self.color, outline = "")
+
 class Line(Entity):
 	def __init__(self, _position1, _position2, _color, _info = ""):
 		super().__init__()

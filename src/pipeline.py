@@ -19,8 +19,15 @@ class Pipeline:
 				callback(line)
 
 class Parser:
+	def getClass(line):
+		return line[line.find("[") + 1:line.find("]")]
+
+	def getArgs(line):
+		args = line[line.find("(") + 1:line.find(")")]
+		return args.split(",")
+
 	def check(self, line):
-		sclass = line[line.find("(") + 1:line.find(")")]
+		sclass = getClass(line)
 		if sclass == "ALIVEVICTIM":
 			return AliveVictim()
 		elif sclass == "DEADVICTIM":

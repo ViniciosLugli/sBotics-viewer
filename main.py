@@ -45,6 +45,10 @@ class App(tk.Frame):
 
 	def mainloop(self):
 		self.root.protocol("WM_DELETE_WINDOW", self.quit)
+		self.drawList.append(AliveVictim((100, 150)))
+		self.drawList.append(DeadVictim((150, 100)))
+		self.drawList.append(Point((150, 150), "red"))
+
 		while self.process:
 			self.canvas.delete("all")
 
@@ -55,7 +59,10 @@ class App(tk.Frame):
 					self.drawList.remove(entity)
 				else:
 					if(entity is not None):
-						entity.draw(self.canvas)
+						try:
+							entity.draw(self.canvas)
+						except Exception as e:
+							print("Error on draw entity, e:", e)
 					else:
 						print("Entity not found")
 						del entity
