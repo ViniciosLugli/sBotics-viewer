@@ -6,11 +6,15 @@ from tkinter import *
 from PIL import ImageTk, Image
 
 #private modules
+from src.colors import monokai
+
 from src.instances.victim import AliveVictim, DeadVictim
 from src.instances.points import Point, Line
 from src.instances.rescueInfos import RescueInfo
 from src.pipeline import Pipeline
 #
+
+
 
 class App(tk.Frame):
 	def __init__(self, root = None):
@@ -45,9 +49,10 @@ class App(tk.Frame):
 
 	def mainloop(self):
 		self.root.protocol("WM_DELETE_WINDOW", self.quit)
-		self.drawList.append(AliveVictim((100, 150)))
-		self.drawList.append(DeadVictim((150, 100)))
-		self.drawList.append(Point((150, 150), "red"))
+		#self.drawList.append(AliveVictim((100, 150)))
+		#self.drawList.append(DeadVictim((150, 100)))
+		#self.drawList.append(Point((150, 150), monokai["red"]))
+		#self.drawList.append(Line((10, 10), (50, 50), monokai["blue"]))
 
 		while self.process:
 			self.canvas.delete("all")

@@ -18,7 +18,7 @@ class Victim(Entity):
 		isRescued = value
 
 	def draw(self, canvas):
-		_create_circle(canvas, self.position[0] * 2, self.position[1] * 2, 12, fill = self.color, outline = "")
+		_create_circle(canvas, self.position, 12, fill = self.color, outline = "")
 
 class AliveVictim(Victim):
 	def __init__(self, position, priority = 1, attempt = 0):
