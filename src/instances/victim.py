@@ -3,7 +3,7 @@ from src.entity import Entity
 from tkinter import *
 
 class Victim(Entity):
-	def __init__(self, position, priority, isRescued, pontuation, color, attempt):
+	def __init__(self, position, priority, isRescued, pontuation, color):
 		super().__init__()
 		self.position = position
 		self.priority = priority
@@ -21,9 +21,9 @@ class Victim(Entity):
 		_create_circle(canvas, self.position, 12, fill = self.color, outline = "")
 
 class AliveVictim(Victim):
-	def __init__(self, position, priority = 1, isRescued = False, attempt = 0):
-		super().__init__(position, priority, 60, "#BFBFBF", attempt)
+	def __init__(self, position, priority = 1, isRescued = False):
+		super().__init__(position, priority, isRescued, 60, "#BFBFBF")
 
 class DeadVictim(Victim):
-	def __init__(self, position, priority = 0, isRescued = False, attempt = 0):
-		super().__init__(position, priority, 50, "#343434", attempt)
+	def __init__(self, position, priority = 0, isRescued = False):
+		super().__init__(position, priority, isRescued, 50, "#343434")
