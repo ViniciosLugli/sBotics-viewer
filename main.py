@@ -54,7 +54,11 @@ class App(tk.Frame):
 				if(entity.deleteQuery):
 					self.drawList.remove(entity)
 				else:
-					entity.draw(self.canvas)
+					if(entity is not None):
+						entity.draw(self.canvas)
+					else:
+						print("Entity not found")
+						del entity
 
 			time.sleep(0.32)
 			self.root.update()
