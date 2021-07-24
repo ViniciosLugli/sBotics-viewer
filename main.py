@@ -21,7 +21,7 @@ class App(tk.Frame):
 		super().__init__(root)
 		self.root = root
 		self.process = True
-		self.drawList = []
+		self.drawList = [None] * 255
 
 		self.root.geometry("600x622")
 		self.pack()
@@ -49,10 +49,10 @@ class App(tk.Frame):
 
 	def mainloop(self):
 		self.root.protocol("WM_DELETE_WINDOW", self.quit)
-		#self.drawList.append(AliveVictim((100, 150)))
-		#self.drawList.append(DeadVictim((150, 100)))
-		#self.drawList.append(Point((150, 150), monokai["red"]))
-		#self.drawList.append(Line((10, 10), (50, 50), monokai["blue"]))
+		self.drawList.append(AliveVictim((100, 150)))
+		self.drawList.append(DeadVictim((150, 100)))
+		self.drawList.append(Point((150, 150), monokai["red"]))
+		self.drawList.append(Line((10, 10), (50, 50), monokai["blue"]))
 
 		while self.process:
 			self.canvas.delete("all")
@@ -68,9 +68,6 @@ class App(tk.Frame):
 							entity.draw(self.canvas)
 						except Exception as e:
 							print("Error on draw entity, e:", e)
-					else:
-						print("Entity not found")
-						del entity
 
 			time.sleep(0.32)
 			self.root.update()
