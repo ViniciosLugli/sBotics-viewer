@@ -32,12 +32,13 @@ class App(tk.Frame):
 		menubar = Menu(self.master)
 		self.root.config(menu=menubar)
 		debugMenu = Menu(menubar)
-		debugMenu.add_command(label="fuk edu", command=self.debug)
-		menubar.add_cascade(label="Debug", menu=debugMenu)
+		debugMenu.add_command(label="reset", command=self.reset)
+		menubar.add_cascade(label="Tools", menu=debugMenu)
 
-	def debug(self):
-		print("fuk edu")
+	def reset(self):
 		self.pipeline.reset()
+		self.rescue.reset()
+		self.drawIdentifiedList = [None] * 255
 
 	def quit(self):
 		self.pipeline.close()

@@ -8,7 +8,7 @@ class Pipeline:
 		self.file = open(self.path, "r")
 
 	def reset(self):
-		self.last_line_limit = 0
+		self.last_line_limit = 1
 		self.close()
 		self.file = open(self.path, "r")
 
