@@ -1,6 +1,5 @@
 import tkinter as tk
 import tkinter.ttk as ttk
-import ttkthemes
 import time
 from tkinter import *
 from PIL import ImageTk, Image
@@ -21,9 +20,9 @@ class App(tk.Frame):
 		self.process = True
 		self.drawIdentifiedList = [None] * 255
 		self.drawFreeList = []
-
+		self.topmost = True
 		self.canvas = Canvas(root, width = 600, height = 622)
-		self.canvas.pack()
+		self.canvas.pack(side='left')
 
 		self.rescue_img = ImageTk.PhotoImage(Image.open("./res/rescue.png"))
 		self.rescue = RescueInfo()
@@ -32,13 +31,14 @@ class App(tk.Frame):
 		menubar = Menu(self.master)
 		self.root.config(menu=menubar)
 		debugMenu = Menu(menubar)
-		debugMenu.add_command(label="reset", command=self.reset)
+		debugMenu.add_command(label="toggle topmost", command=self.reset)
 		menubar.add_cascade(label="Tools", menu=debugMenu)
 
 	def reset(self):
 		self.pipeline.reset()
 		self.rescue.reset()
 		self.drawIdentifiedList = [None] * 255
+		self.drawFreeList = []
 
 	def quit(self):
 		self.pipeline.close()
@@ -48,7 +48,7 @@ class App(tk.Frame):
 		self.canvas.create_image(0, 0, anchor=NW, image=self.rescue_img)
 
 	def update(self, line, position):
-		self.root.title(f'sBotics viewer line:{position}')
+		self.root.title(f'sBotics viewer - line:{position}')
 		res = Parser.check(line)
 
 		if res[0] == "ALIVEVICTIM" or res[0] == "DEADVICTIM":
@@ -67,7 +67,8 @@ class App(tk.Frame):
 
 		while self.process:
 			#Read infos process
-			self.pipeline.update(self.update)
+			if self.pipeline.update(self.update):
+				self.reset()
 
 			#Render process
 			self.canvas.delete("all")
@@ -100,10 +101,9 @@ class App(tk.Frame):
 root = tk.Tk()
 root.title("sBotics viewer")
 root.attributes('-topmost', True)
-root.geometry("600x622")
+root.geometry("800x622")
 root.resizable(False, False)
 root.iconphoto(False, PhotoImage(file = './res/logo.png'))
-ttkthemes.themed_style.ThemedStyle(theme="breeze")
 
 app = App(root)
 app.mainloop()

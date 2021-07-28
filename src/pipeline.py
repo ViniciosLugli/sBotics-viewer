@@ -3,12 +3,12 @@ from src.instances.points import Point, Line
 import json
 class Pipeline:
 	def __init__(self, _path):
-		self.last_line_limit = 0
+		self.last_line_limit = -1
 		self.path = _path
 		self.file = open(self.path, "r")
 
 	def reset(self):
-		self.last_line_limit = 1
+		self.last_line_limit = -1
 		self.close()
 		self.file = open(self.path, "r")
 
@@ -20,12 +20,17 @@ class Pipeline:
 
 	def update(self, callback):
 		self.open()
+		lastLine = 0
 		for position, line in enumerate(self.file):
-			if(position > self.last_line_limit and len(line) > 7):
+			if((position > self.last_line_limit and len(line) > 7)):
 				self.last_line_limit = position
-				print("New line: ", line)
+				print(f'New line on {position}:', line)
 				callback(line, position)
+			lastLine = position
 		self.close()
+		if(lastLine < self.last_line_limit):
+			return True
+		return False
 
 class Parser:
 	def getClass(line):
