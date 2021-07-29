@@ -18,6 +18,12 @@ class Pipeline:
 	def close(self):
 		self.file.close()
 
+	def set_path(self, path_):
+		if path_ == '':
+			return
+		else:
+			self.path = path_
+
 	def update(self, callback):
 		self.open()
 		lastLine = 0

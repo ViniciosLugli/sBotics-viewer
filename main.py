@@ -11,6 +11,7 @@ from src.instances.victim import AliveVictim, DeadVictim
 from src.instances.points import Point, Line
 from src.instances.rescueInfos import RescueInfo
 from src.pipeline import Pipeline, Parser
+from src.browseFile import FileBrowser
 #
 
 class App(tk.Frame):
@@ -22,7 +23,7 @@ class App(tk.Frame):
 		self.drawFreeList = []
 		self.topmost = True
 		self.canvas = Canvas(root, width = 600, height = 622)
-		self.canvas.pack(side='left')
+		self.canvas.pack()
 
 		self.rescue_img = ImageTk.PhotoImage(Image.open("./res/rescue.png"))
 		self.rescue = RescueInfo()
@@ -31,8 +32,12 @@ class App(tk.Frame):
 		menubar = Menu(self.master)
 		self.root.config(menu=menubar)
 		debugMenu = Menu(menubar)
-		debugMenu.add_command(label="toggle topmost", command=self.reset)
+		debugMenu.add_command(label="reset", command=self.reset)
+		debugMenu.add_command(label="open file", command=self.open_file)
 		menubar.add_cascade(label="Tools", menu=debugMenu)
+
+	def open_file(self):
+		self.pipeline.set_path(FileBrowser.browse())
 
 	def reset(self):
 		self.pipeline.reset()
@@ -58,7 +63,9 @@ class App(tk.Frame):
 		elif res[0] == "RESCUE":
 			self.rescue.triangle = res[1]["triangle"]
 			self.rescue.exit = res[1]["exit"]
-			self.drawIdentifiedList[254] = self.rescue.update()
+			rescueUpdate = self.rescue.update()
+			self.drawIdentifiedList[254] = rescueUpdate[0]
+			self.drawIdentifiedList[253] = rescueUpdate[1]
 		elif res[0] == "CLEARLINES":
 			self.drawFreeList = []
 
@@ -101,7 +108,7 @@ class App(tk.Frame):
 root = tk.Tk()
 root.title("sBotics viewer")
 root.attributes('-topmost', True)
-root.geometry("800x622")
+root.geometry("600x622")
 root.resizable(False, False)
 root.iconphoto(False, PhotoImage(file = './res/logo.png'))
 
